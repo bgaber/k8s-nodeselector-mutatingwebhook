@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: liveconfigmap
+  namespace: mutatingwh
+data:
+  live-list.txt: |
+    mutatingwh1
+    mutatingwh2
+    mutatingwh3
+    mutatingwh4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox-file-mount
+  namespace: mutatingwh
+  labels:
+    app: client
+spec:
+  containers:
+  - name: busybox
+    image: radial/busyboxplus:curl
+    command: ['sh', '-c', 'while true; do sleep 5; done']
+    volumeMounts:
+      - name: live-volume
+        mountPath: /data/live-list.txt
+        subPath: live-list.txt
+  volumes:
+    - name: live-volume
+      configMap:
+        name: liveconfigmap

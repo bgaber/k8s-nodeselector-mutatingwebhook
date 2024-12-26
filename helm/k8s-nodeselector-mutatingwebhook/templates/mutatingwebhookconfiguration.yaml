@@ -1,0 +1,26 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ .Values.MutatingWebhookConfiguration.mwhName }}
+  namespace: {{ .Values.namespace }}
+webhooks:
+  - name: {{ .Values.MutatingWebhookConfiguration.webhookName }}
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: In
+          values: ["latest"]  # Only namespaces with this label will be affected
+    clientConfig:
+      service:
+        name: {{ .Values.webhookService.serviceName }}
+        namespace: {{ .Values.namespace }}
+        path: "/mutate"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURHVENDQWdHZ0F3SUJBZ0lVUDBqc3M1RFMyOEtMaHBFMVU3Rnp4ZGNIdG5jd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0hERWFNQmdHQTFVRUF3d1JUWFYwWVhScGJtZFhaV0pvYjI5clEwRXdIaGNOTWpReE1qQTBNVEkxT1RJMwpXaGNOTWpVeE1qQTBNVEkxT1RJM1dqQWNNUm93R0FZRFZRUUREQkZOZFhSaGRHbHVaMWRsWW1odmIydERRVENDCkFTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBS2dHSnlrVUFaOHh1T0swU1JMR1pvcDMKWTZ3Vy81dGluQ0lXMmZ4K2R4aVo4OTVNVmhZWWUvR1BjczlQMnJlTVNhUXN1SmRGejdRTUNMdzE5aCs0THBGZgo2MUtkSUFXbWpLa1RyM3Y2dUV3bEFiZkE1b24xT0hPY3dzU2loVXdQRmZUa2dsVEh0dzd4MERNVFYzZ3hGSHFQCnAyNVZJWG9vOGJEZWtIMkpEblNzdzBsVFRYWXliWEpVam5SaC9Ub0pnOVFqRUxHNC9JcDRBQVFlTXZUcXdTVjcKcjZyY0ZRRERsY2NqMkFPN0V5bWo3clB3QW9lQkZHUlR1NVl4bnhLRWpabGMrTXdRd1NmckJ6OEhNRHZpMUxkUAphTFpyRFRub2lGMmhiRFdFSFd4Mld0Z2c3MG90RnNpcFpnUEV2emZ6cXFYTkVGa1liVk9ISGJHL21ZSXEvVkVDCkF3RUFBYU5UTUZFd0hRWURWUjBPQkJZRUZBamQrM2xteTh2Ky9YQXN2RnE3dWVKNDNLZ3JNQjhHQTFVZEl3UVkKTUJhQUZBamQrM2xteTh2Ky9YQXN2RnE3dWVKNDNLZ3JNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdEUVlKS29aSQpodmNOQVFFTEJRQURnZ0VCQUFyUWRtZnRvQi9YNDdlQnErQjNKR3lBdXJwK0ZHUFhCSnVEWklHbVp2ZzVRWXNECm5RY1QzcWlQWkw5SktLd2VOSWZxTm5EVUFTUHNjd29rdTQxa2UrdXVjR2dFRE01aFRvUm1TdWJpZHcvM09FWFUKTnhmMHVBcVI4ZVRpY3NXYXN6WjhEUitRdFcyWkNJbG5nQjN1TVl2eDF3VlZDUVRTT2JZUVRuNU5zbkF4c1daRApZcEdoZDIzWkQwZ0t0WWhDdTF0YjgvTDBobW0zVTJQTDdQUW9Ga0VtcFlsQmEyblVzQk1tSnpyaExsVUxZYit1CmtCWjh0S1BPTVliUjVWejhsMEdPVXdhcDZLQWEwa2ZHQjJHWVVYdXRCY3dOc2gxWFFFUFY3c0FMcHBLYXNjM0cKclpYMlFOWU9GM2ZDdGZxSXk1MzVydndsdUZPZ1RWRXQ5R0tBZ1ZnPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    rules:
+      - operations: ["CREATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    failurePolicy: Ignore
+    admissionReviewVersions: ["v1"]
+    sideEffects: None

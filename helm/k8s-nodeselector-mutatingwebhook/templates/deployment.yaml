@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.webhookDeployment.deploymentName }}
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.webhookDeployment.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.webhookDeployment.appLabel }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.webhookDeployment.appLabel }}
+    spec:
+      containers:
+        - name: {{ .Values.webhookDeployment.containerName }}
+          image: {{ .Values.webhookDeployment.image }}
+          ports:
+            - containerPort: {{ .Values.webhookDeployment.port }}
+          volumeMounts:
+            - name: {{ .Values.webhookDeployment.tlsVolumeName }}
+              mountPath: /tls
+              readOnly: true
+          resources:
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+      volumes:
+        - name: {{ .Values.webhookDeployment.tlsVolumeName }}
+          secret:
+            secretName: {{ .Values.webhookDeployment.tlsSecretName }}

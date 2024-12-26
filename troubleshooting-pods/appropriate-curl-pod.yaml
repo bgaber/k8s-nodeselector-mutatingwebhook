@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: appropriate-curl
+  namespace: mutatingwh
+  labels:
+    app: client
+spec:
+  containers:
+  - name: appropriate-curl
+    image: appropriate/curl
+    command: ['sh', '-c', 'while true; do sleep 5; done']

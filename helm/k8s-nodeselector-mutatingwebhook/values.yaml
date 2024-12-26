@@ -1,0 +1,25 @@
+# Default values for k8s-nodeselector-mutatingwebhook.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: nodeselector-mwh
+
+webhookDeployment:
+  deploymentName: nodeselector-mutating-webhook
+  containerName: nnodeselector-mutating-webhook
+  replicas: 2
+  image: artifactory.tecsysrd.cloud/tecsys-noc/nodeselector-mutating-webhook:v2-79c90fa2
+  port: 443
+  appLabel: nodeselector-mutating-webhook
+  tlsVolumeName: nodeselector-tls-certs
+  tlsSecretName: nodeselector-webhook-tls
+
+webhookService:
+  serviceName: nodeselector-mutating-webhook-svc
+
+MutatingWebhookConfiguration:
+  mwhName: nodeselector-mutating-webhook
+  webhookName: nodeselector-mutating.k8s.io
+
+HPA:
+  hpaName: nodeselector-mutating-webhook-hpa

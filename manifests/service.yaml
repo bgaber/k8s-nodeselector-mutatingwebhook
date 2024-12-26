@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeselector-mutating-webhook-svc
+  namespace: nodeselector-mwh
+spec:
+  ports:
+    - port: 443
+      targetPort: 443
+  selector:
+    app: nodeselector-mutating-webhook

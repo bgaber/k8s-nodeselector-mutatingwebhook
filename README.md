@@ -2,9 +2,7 @@
 
 # Objective
 
-The objective of this project is add a NodeSelector to all new Pods in the NPRI Cluster.  Three solutions were considered:
-
-Two methods of deploying the K8s MutatingWebhook are explained:
+The objective of this project is add a NodeSelector to all new Pods in the NPRI Cluster.  Two methods of deploying the K8s MutatingWebhook are explained:
 
 1. Manual installation of the K8s MutatingWebhook using K8s resource manifest files deployed using the kubectl command.
 2. Standalone Helm Chart package that deploys the K8s MutatingWebhook solution using Helm templates and values file (see separate README.md in the [/helm](helm/README.md) directory).

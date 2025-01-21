@@ -50,7 +50,6 @@ Thumbs.db
 
 # set by Brian
 venv
-*.v*.py
 *.v*.sh
 *.v*.js
 *.v*.html

@@ -1,0 +1,21 @@
+apiVersion: crd.projectcalico.org/v1
+kind: GlobalNetworkPolicy
+metadata:
+  name: nodeselector-mwh-network-policy
+spec:
+  order: 10
+  types:
+  - Ingress
+  ingress:
+    - action: Allow
+      metadata:
+        annotations:
+          from: anywhere
+          to: nodeselector-webhook-in-mutatingwh
+      protocol: TCP
+      destination:
+        selector: app == 'nodeselector-mutating-webhook'
+        namespaceSelector: kubernetes.io/metadata.name == 'nodeselector-mwh'
+        ports:
+          - 443
+          
